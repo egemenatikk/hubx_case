@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { dbUri } from "../config";
+import { dbUri } from "../config/index.js";
 
 export default async () => {
     console.log("database url:", dbUri);

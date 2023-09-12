@@ -8,6 +8,7 @@
   },
   "author": "egemenatikk",
   "license": "ISC",
+  "type": "module",
   "dependencies": {
     "body-parser": "^1.20.2",
     "compression": "^1.7.4",

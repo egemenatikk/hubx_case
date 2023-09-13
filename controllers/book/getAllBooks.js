@@ -6,6 +6,6 @@ export default async (req, res) => {
         res.json(books);
 
     } catch (error) {
-        res.status(500).json({ "resultMessage": "Error connecting to the DB" });
+        res.status(500).json({ message: "Something went wrong" });
     }
 }

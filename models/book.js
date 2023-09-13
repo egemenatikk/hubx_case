@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import Author from "./author.js"; 
 import languages from "./languages.js";
 
 const { Schema, model } = mongoose;
@@ -11,7 +10,9 @@ const bookSchema = new Schema({
         index: true
     },
     author: {
-        type: Author.schema
+        type: Schema.Types.ObjectId,
+        ref: "Author",
+        required: true
     },
     price: {
         type: Number,
@@ -45,6 +46,9 @@ const bookSchema = new Schema({
         type: String,
         default: "Unknown"
     }
+},
+{ 
+    toJSON: { getters: true } 
 });
 
 const Book = model("Book", bookSchema);

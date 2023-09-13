@@ -27,15 +27,14 @@ const authorSchema = new Schema({
 
     birthDate: {
         type: Date,
-        max: Date.now()
-    }
+        max: () => Date.now(),
+    }    
 },
 {
     timestamps: true,
     toJSON: {
         transform: function (doc, ret, options) {
             ret.id = ret._id;
-            delete ret.BERT;
             delete ret._id;
             return ret;
         },

@@ -5,7 +5,7 @@ export default async () => {
     console.log("database url:", dbUri);
 
     await mongoose.connect(
-        dbUri,
+        "mongodb://root:example@db:27017",
         {
             useNewUrlParser: true,
             useUnifiedTopology: true

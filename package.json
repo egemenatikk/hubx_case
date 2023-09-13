@@ -4,7 +4,8 @@
   "description": "API of the hubx recruitment backend case.",
   "main": "app.js",
   "scripts": {
-    "test": "node app.js"
+    "test": "node app.js",
+    "start": "node app.js"
   },
   "author": "egemenatikk",
   "license": "ISC",

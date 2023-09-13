@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import authorSchema from "./author.js"; 
+import Author from "./author.js"; 
 import languages from "./languages.js";
 
 const { Schema, model } = mongoose;
@@ -11,7 +11,7 @@ const bookSchema = new Schema({
         index: true
     },
     author: {
-        type: authorSchema
+        type: Author.schema
     },
     price: {
         type: Number,

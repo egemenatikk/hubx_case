@@ -1,5 +1,5 @@
 import Joi from "joi";
-import languages from "../models/languages.js";
+import { languages } from "../models/index.js";
 
 export function validateCreateBook(body) {
     const schema = Joi.object({

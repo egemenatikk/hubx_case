@@ -11,7 +11,7 @@ export default async (req, res) => {
         }
 
         return res.status(200).json({ 
-            message: "Book is fetched successfully",
+            message: "Book is successfully fetched",
             book: book
         });
 

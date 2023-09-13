@@ -1,13 +1,13 @@
-import { Book } from "../../models/index.js";
+import { Author } from "../../models/index.js";
 
 export default async (req, res) => {
     try {
-        const books = await Book.find();
+        const authors = await Author.find();
         
         return res.status(200).json({
-            message: "All books are successfully fetched",
-            books: books
-        });
+            message: "All authors are successfully fetched",
+            authors: authors
+        });  
 
     } catch (error) {
         return res.status(500).json({ message: "Something went wrong" });

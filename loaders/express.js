@@ -4,6 +4,7 @@ import cors from "cors";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import routes from "../routes/index.js";
 
 export default (app) => {
     
@@ -24,6 +25,8 @@ export default (app) => {
     app.use(compression());
     app.disable("x-powered-by");
     app.disable("etag");
+
+    app.use("", routes);
 
     app.get("/", (_req, res) => {
         return res.status(200).json({

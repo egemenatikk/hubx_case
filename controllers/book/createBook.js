@@ -1,4 +1,4 @@
-import { Book } from "../../models/index.js";
+import { Book, Author } from "../../models/index.js";
 import { validateCreateBook } from "../../validators/bookValidator.js";
 
 export default async (req, res) => {
@@ -8,10 +8,16 @@ export default async (req, res) => {
             return res.status(400).json({ message: error.message });
         }
 
-        const bookExists = await Book.exists({ ISBN: req.body.ISBN })
+        const bookExists = await Book.exists({ ISBN: req.body.ISBN });
 
         if (bookExists) {
             return res.status(409).json({ message: "There already exists a book with given ISBN code" });
+        }
+
+        const authorExists = await Author.exists({ _id: req.body.author });
+
+        if (!authorExists) {
+            return res.status(404).json({ message: "There are no authors with given author ID" });
         }
 
         let book = new Book({
@@ -25,6 +31,8 @@ export default async (req, res) => {
         });
 
         book = await book.save()
+
+        book = await Book.populate(book, { path: "author" });
 
         return res.status(201).json({ 
             message: "Book is successfully created",

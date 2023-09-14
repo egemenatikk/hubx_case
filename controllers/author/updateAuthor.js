@@ -14,15 +14,13 @@ export default async (req, res) => {
             return res.status(404).json({ message: "There are no authors with given ID" })
         }
 
-        const authorByInfo = await Author.find({ 
+        const sameInfoAuthor = await Author.findOne({ 
             name: req.body.name,
             country: req.body.country,    
             birthDate: req.body.birthDate
         });
 
-        if (authorByInfo.length > 0) {
-            
-            const sameInfoAuthor = authorByInfo[0];
+        if (sameInfoAuthor) {
 
             if (sameInfoAuthor._id.toString() !== req.params.id) {
                 return res.status(409).json({ message: "There already exists an author with the exact same information" });

@@ -4,11 +4,13 @@ export default async (req, res) => {
     try {
         const bookId = req.params.id;
 
-        const book = await Book.findById(bookId);
+        let book = await Book.findById(bookId);
 
         if (!book) {
             return res.status(404).json({ message: "There are no books with given ID" });
         }
+
+        book = await Book.populate(book, { path: "author" });
 
         return res.status(200).json({ 
             message: "Book is successfully fetched",

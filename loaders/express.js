@@ -16,6 +16,7 @@ export default (app) => {
         console.log(ex);
     });
 
+    // application configurations
     app.enable("trust proxy");
     app.use(cors());
     app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,6 +36,7 @@ export default (app) => {
         .end();
     });
 
+    // middlewares
     app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*");
         res.header("Access-Control-Allow-Headers",

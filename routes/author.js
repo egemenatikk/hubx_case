@@ -10,6 +10,7 @@ import {
 
 const router = Router();
 
+// specifies functions to call for endpoints and corresponding methods
 router.post("/", createAuthor);
 router.delete("/:id", deleteAuthor);
 router.get("/", getAllAuthors);

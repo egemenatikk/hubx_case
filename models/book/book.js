@@ -34,6 +34,7 @@ const bookSchema = new Schema({
             message: "There are no such languages.",
           },
         default: "Unknown",
+        // converts every word in language field to Pascal case
         get: function (value) {
             const words = value.toLowerCase().split(' ');
             const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));

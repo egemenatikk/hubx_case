@@ -20,6 +20,7 @@ const authorSchema = new Schema({
             message: "There are no such countries.",
           },
         default: "Unknown",
+        // converts every word in country field to Pascal case
         get: function (value) {
             const words = value.toLowerCase().split(' ');
             const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
@@ -29,6 +30,7 @@ const authorSchema = new Schema({
 
     birthDate: {
         type: Date,
+        // max value for this field can be date of current time
         max: () => Date.now(),
     }    
 },

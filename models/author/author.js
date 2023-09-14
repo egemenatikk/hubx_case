@@ -21,8 +21,10 @@ const authorSchema = new Schema({
           },
         default: "Unknown",
         get: function (value) {
-            return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-        },
+            const words = value.toLowerCase().split(' ');
+            const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+            return capitalizedWords.join(' ');
+        }
     },
 
     birthDate: {

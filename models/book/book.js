@@ -35,8 +35,10 @@ const bookSchema = new Schema({
           },
         default: "Unknown",
         get: function (value) {
-            return value.charAt(0).toUpperCase() + value.slice(1).toLowerCase();
-        },
+            const words = value.toLowerCase().split(' ');
+            const capitalizedWords = words.map(word => word.charAt(0).toUpperCase() + word.slice(1));
+            return capitalizedWords.join(' ');
+        }
     },
     numberOfPages: {
         type: Number,
@@ -48,7 +50,17 @@ const bookSchema = new Schema({
     }
 },
 { 
-    toJSON: { getters: true } 
+    timestamps: true,
+    toJSON: {
+        getters: true,
+        transform: function (doc, ret, options) {
+            ret.id = ret._id;
+            delete ret._id;
+            return ret;
+        },
+        virtuals: true,
+    },
+    versionKey: false 
 });
 
 const Book = model("Book", bookSchema);

@@ -1,6 +1,32 @@
 import { Author } from "../../models/index.js";
 import { validateEditAuthor } from "../../validators/authorValidator.js";
 
+/**
+ * @route PUT /author/:id
+ * 
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.name - The name of the author (optional).
+ * @param {string} [req.body.country] - The country of the author (optional).
+ * @param {Date} [req.body.birthDate] - The birth date of the author (optional).
+ * @param {string} req.params.id - The ID of the author.
+ * 
+ * @description 
+ *      This is the endpoint for updating an author document from Author collection by id. Firstly, it calls Joi validator method to validate body 
+ *  and checks whether values in body are valid or nor. If any validation error occurs, it returns a JSON object containing error message with HTTP 
+ *  status code of 400. If not, it gets id parameter and checks whether there is an author in Author collection with given id. If not, it returns a
+ *  JSON object containing error message with HTTP status code of 404. Then it checks whether there is an author document with exact same 
+ *  information given in body. If there is already an author document with exact same information given in body, it checks whether that document is
+ *  same as the document that is currently updated. If not, it returns a JSON object containing error message with HTTP status code of 409. If so,
+ *  It returns a JSON object containing information message about document is not updated and author document without updating it with HTTP status
+ *  code of 200. Then, it updates author document and saves it to Author collection. Finally, it returns a JSON object containing success message
+ *  and updated author with HTTP status code of 200.
+ * 
+ *  If any error occurs during that process, it returns a JSON object containing error message with HTTP status code of 500.
+ * 
+ * @returns {string, Object} Success message, Author document
+ * @returns {string} Error message
+ */
+
 export default async (req, res) => {
     try {
 

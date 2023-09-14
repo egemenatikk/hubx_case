@@ -1,5 +1,21 @@
 import { Author } from "../../models/index.js";
 
+/**
+ * @route DELETE /author/:id
+ * 
+ * @param {string} req.params.id - The ID of the author.
+ * 
+ * @description 
+ *      This is the endpoint for deleting an author document from Author collection. Firstly, it gets id parameter and checks whether there is an 
+ *  author in Author collection with given id. If not, it returns a JSON object containing error message with HTTP status code of 404. If there is
+ *  an author with given id, it deletes that author document from Author collection. Lastly, it returns a JSON object containing success message
+ *  with HTTP status code of 200.
+ * 
+ *  If any error occurs during that process, it returns a JSON object containing error message with HTTP status code of 500.
+ * 
+ * @returns {string} Error/success message
+ */
+
 export default async (req, res) => {
     try {
         // gets id parameter from request

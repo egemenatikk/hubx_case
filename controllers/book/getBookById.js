@@ -1,5 +1,22 @@
 import { Book } from "../../models/index.js";
 
+/**
+ * @route GET /book/:id
+ * 
+ * @param {string} req.params.id - The ID of the book.
+ * 
+ * @description 
+ *      This is the endpoint for getting a book document from Book collection by id. Firstly, it gets id parameter and checks whether there is 
+ *  a book in Book collection with given id. If not, it returns a JSON object containing error message with HTTP status code of 404. If there
+ *  is a book document with given id, it also gets the corresponding author document by using author id in author field of book document. Lastly, 
+ *  it returns a JSON object containing success message and book document with HTTP status code of 200.
+ * 
+ *  If any error occurs during that process, it returns a JSON object containing error message with HTTP status code of 500.
+ * 
+ * @returns {string, Object} Success message, Book document
+ * @returns {string} Error message
+ */
+
 export default async (req, res) => {
     try {
         // gets id parameter from request

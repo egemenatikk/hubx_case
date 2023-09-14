@@ -1,6 +1,34 @@
 import { Book, Author } from "../../models/index.js";
 import { validateCreateBook } from "../../validators/bookValidator.js";
 
+/**
+ * @route POST /book
+ * 
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.title - The title of the book.
+ * @param {Object} req.body.author - The author of the book.
+ * @param {string} req.body.ISBN - The ISBN code of the book.
+ * @param {number} req.body.price - The price of the book (optional).
+ * @param {string} req.body.language - The language of the book (optional).
+ * @param {number} req.body.numberOfPages - The number of pages in the book (optional).
+ * @param {string} req.body.publisher - The publisher of the book (optional).
+ * 
+ * @description 
+ *      This is the endpoint for creating a book document in Book collection. Firstly, it calls Joi validator function to check whether values in 
+ *  body are valid or not. If any validation error occurs, it returns a JSON object containing error message with HTTP status code of 400. If there
+ *  are not any validation errors, it checks whether a book document with given ISBN value already exists in Book collection or not. If so, it 
+ *  returns a JSON object containing error message with HTTP status code of 409. If not, it continues by checking whether an author in Author
+ *  collection with given id in author field in body exists. If not, it returns a JSON object containing error message with HTTP status code of 404.
+ *  If the author exists, it creates book document and saves it to Book collection. Then, it gets author document from Author collection using the 
+ *  author id value in author field of body. Finally, it returns a JSON object containing success message and created book document with HTTP status
+ *  code of 201.
+ * 
+ *  If any error occurs during that process, it returns a JSON object containing error message with HTTP status code of 500.
+ * 
+ * @returns {string, Object} Success message, Book document
+ * @returns {string} Error message
+ */
+
 export default async (req, res) => {
     try {
 

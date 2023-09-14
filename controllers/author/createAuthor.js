@@ -1,6 +1,28 @@
 import { Author } from "../../models/index.js";
 import { validateCreateAuthor } from "../../validators/authorValidator.js";
 
+/**
+ * @route POST /author
+ * 
+ * @param {Object} req.body - The request body.
+ * @param {string} req.body.name - The name of the author.
+ * @param {string} req.body.country - The country of the author (optional).
+ * @param {Date} req.body.birthDate - The birth date of the author (optional).
+ * 
+ * @description 
+ *      This is the endpoint for creating an author document in Author collection. Firstly, it checks whether the values given in body are valid or
+ *  not by using Joi validator. If there are any validation errors, it returns a JSON object containing error message with HTTP status code of 400.
+ *  If there are no validation errors, it checks whether there is an author document with exact same values given in body. If so, it returns an 
+ *  error message in response with HTTP status code of 409. If not, it creates the author object with given values and saves it to Author 
+ *  collection. Lastly, it returns a JSON object containing success message and newly created author document in response with HTTP status code of
+ *  201.
+ * 
+ *  If any error occurs during that process, it returns a JSON object containing error message with HTTP status code of 500.
+ * 
+ * @returns {string, Object} Success message, Author document
+ * @returns {string} Error message
+ */
+
 export default async (req, res) => {
     try {
 

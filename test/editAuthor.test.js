@@ -105,7 +105,7 @@ describe("Edit Author Endpoint: PUT /author/:id", () => {
             .end(done);
     });
 
-    it("should return a 404 error code and if an author with given id does not exist in database", (done) => {
+    it("should return a 404 error code if an author with given id does not exist in database", (done) => {
         const newAuthor = {
             name: "J. R. R. Tolkien",
             birthDate: "1892-01-03",

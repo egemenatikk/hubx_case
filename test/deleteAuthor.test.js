@@ -20,7 +20,7 @@ describe("Delete Author Endpoint: DELETE /author/:id", () => {
         firstNewAuthorId = firstResponse.body.author.id;
     });
 
-    it("should return a 404 error code and if an author with given id does not exist in database", (done) => {
+    it("should return a 404 error code if an author with given id does not exist in database", (done) => {
 
         request(app)
         .delete(`/author/012345678901234567890123`)

@@ -1,22 +1,39 @@
 version: "3.8"
 services:
-  db:
+  db-production:
     image: mongo:latest
     restart: always
-    environment: 
+    environment:
       MONGO_INITDB_ROOT_USERNAME: user
       MONGO_INITDB_ROOT_PASSWORD: password
     ports:
       - 27017:27017
     volumes:
-      - mongo-data:/data/db
+      - mongo-data-production:/data/db
+
+  db-test:
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+    ports:
+      - 27018:27017 
+    volumes:
+      - mongo-data-test:/data/db
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: always
     ports:
-      - "8080:8080"
+      - "3000:3000"
     depends_on:
-      - db
+      - db-production
+      - db-test
+    command: ["sh", "-c", "if [ \"$NODE_ENV\" = \"test\" ]; then npm test; else npm start; fi"]
+
 volumes:
-  mongo-data:
+  mongo-data-production:
+  mongo-data-test:

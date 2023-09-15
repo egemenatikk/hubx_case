@@ -4,7 +4,7 @@ import loader from "./loaders/index.js";
 
 const app = express();
 
-loader(app);
+await loader(app);
 
 app.listen(port, err => {
     if (err) {

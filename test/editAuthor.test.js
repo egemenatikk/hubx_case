@@ -6,53 +6,40 @@ import app from "../app.js";
 let firstNewAuthorId = "";
 let secondNewAuthorId = "";
 
-describe("Create Author Endpoint: POST /author", () => {
+describe("Edit Author Endpoint: PUT /author/:id", () => {
 
-    it("should create author if there are no validation errors and there are no authors with the same information in database", (done) => {
-        const newAuthor = {
-            name: "Agatha Christie",
-            birthDate: "1890-09-15",
-            country: "United Kingdom"
+    before(async () => {
+        const firstNewAuthor = {
+            name: "J. R. R. Tolkien",
+            birthDate: "1892-01-03",
+            country: "South Africa"
         };
 
-        request(app)
+        const firstResponse = await request(app)
             .post("/author")
-            .send(newAuthor)
-            .expect((res) => {
-                expect(res.status).toBe(201);
-                expect(res.body.message).toBe("Author is successfully created");
-                expect(res.body).toHaveProperty("author");
-                firstNewAuthorId = res.body.author.id;
-            })
-            .end(done);
-    });
+            .send(firstNewAuthor);
 
-    it("should return a 400 error code if the 'name' field is missing in body", (done) => {
-        const newAuthor = {
-            birthDate: "1990-08-20",
-            country: "Australia"
+        firstNewAuthorId = firstResponse.body.author.id;
+
+        const secondNewAuthor = {
+            name: "Charles Dickens",
+            country: "France"
         };
 
-        request(app)
+        const secondResponse = await request(app)
             .post("/author")
-            .send(newAuthor)
-            .expect((res) => {
-                expect(res.status).toBe(400);
-                expect(res.body).toHaveProperty("message");
-                expect(res.body.message).toBe("\"name\" is required");
-            })
-            .end(done);
+            .send(secondNewAuthor);
+
+        secondNewAuthorId = secondResponse.body.author.id;
     });
 
     it("should return a 400 error if the 'country' is not on the countries list", (done) => {
         const newAuthor = {
-            name: "John Doe",
-            birthDate: "1980-05-15",
             country: "NonexistentCountry"
         };
 
         request(app)
-            .post("/author")
+            .put(`/author/${secondNewAuthorId}`)
             .send(newAuthor)
             .expect((res) => {
                 expect(res.status).toBe(400);
@@ -64,13 +51,13 @@ describe("Create Author Endpoint: POST /author", () => {
 
     it("should return a 400 error if the 'birthDate' is not a valid date", (done) => {
         const newAuthor = {
-            name: "Adam Fawer",
+            name: "Charles Dickens",
             birthDate: "InvalidDate",
-            country: "United States"
+            country: "United Kingdom"
         };
 
         request(app)
-            .post("/author")
+            .put(`/author/${secondNewAuthorId}`)
             .send(newAuthor)
             .expect((res) => {
                 expect(res.status).toBe(400);
@@ -82,36 +69,77 @@ describe("Create Author Endpoint: POST /author", () => {
 
     it("should return a 409 error if an author with the same information already exists", (done) => {
         const existingAuthor = {
-            name: "Agatha Christie",
-            birthDate: "1890-09-15",
-            country: "United Kingdom"
+            name: "J. R. R. Tolkien",
+            birthDate: "1892-01-03",
+            country: "South Africa"
         };
 
         request(app)
-            .post("/author")
+        .put(`/author/${secondNewAuthorId}`)
             .send(existingAuthor)
             .expect((res) => {
                 expect(res.status).toBe(409);
                 expect(res.body).toHaveProperty("message");
-                expect(res.body.message).toBe("There already exists an author with exact same informations");
+                expect(res.body.message).toBe("There already exists an author with the exact same information");
             })
             .end(done);
     });
 
-    it("should create author if there are no validation errors and there are no authors with the same information in database even if some fields are missing because they are not required", (done) => {
-        const newAuthor = {
-            name: "Adam Fawer",
-            country: "United States"
+    it("should return a 200 status code and information message without updating if no changes made to informations of the author", (done) => {
+        const existingAuthor = {
+            name: "J. R. R. Tolkien",
+            birthDate: "1892-01-03",
+            country: "South Africa"
         };
 
         request(app)
-            .post("/author")
+        .put(`/author/${firstNewAuthorId}`)
+            .send(existingAuthor)
+            .expect((res) => {
+                expect(res.status).toBe(200);
+                expect(res.body).toHaveProperty("message");
+                expect(res.body.message).toBe("Author is not updated since the information given is the same as the information of the existing author");
+                expect(res.body).toHaveProperty("author");
+                expect(res.body.author.id).toBe(firstNewAuthorId);
+            })
+            .end(done);
+    });
+
+    it("should return a 404 error code and if an author with given id does not exist in database", (done) => {
+        const newAuthor = {
+            name: "J. R. R. Tolkien",
+            birthDate: "1892-01-03",
+            country: "South Africa"
+        };
+
+        request(app)
+        .put(`/author/012345678901234567890123`)
             .send(newAuthor)
             .expect((res) => {
-                expect(res.status).toBe(201);
-                expect(res.body.message).toBe("Author is successfully created");
-                expect(res.body).toHaveProperty("author");
-                secondNewAuthorId = res.body.author.id;
+                expect(res.status).toBe(404);
+                expect(res.body).toHaveProperty("message");
+                expect(res.body.message).toBe("There are no authors with given ID");
+            })
+            .end(done);
+    });
+
+    
+
+    it("should edit an author with success if there are no validation errors and there are no authors with the same information in database even if some fields are missing because they are not required", (done) => {
+        const newAuthor = {
+            birthDate: "1812-02-07",
+            country: "United Kingdom"
+        };
+
+        request(app)
+        .put(`/author/${secondNewAuthorId}`)
+            .send(newAuthor)
+            .expect((res) => {
+                expect(res.status).toBe(200);
+                expect(res.body).toHaveProperty("message");
+                expect(res.body.message).toBe("Author is successfully updated");
+                expect(res.body).toHaveProperty("author")
+                expect(res.body.author.id).toBe(secondNewAuthorId);
             })
             .end(done);
     });
